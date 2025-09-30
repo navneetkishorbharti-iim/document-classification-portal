@@ -1,6 +1,6 @@
 # 📄 Document Classification Portal
 
-A working prototype that ingests a PDF (scanned or digital) and outputs the predicted document type.
+A working prototype that ingests a PDF (scanned or digital) and outputs the predicted document type built by Navneet Kishor Bharti.
 
 ---
 
@@ -46,7 +46,7 @@ Click here to access the deployed app:
 
 ---
 
-## ➕ How to Add a New Category
+## ➕ How to Add a New Category(assumption: this repo is internally available to the team)
 
 1. Navigate to the repo and open **`app.py`**.
 2. Locate the **`CATEGORIES`** dictionary (starting around line 99).
