@@ -67,8 +67,8 @@ def classify_document(text):
         scores[cat] = score
     best_cat = max(scores, key=scores.get)
     confidence = scores[best_cat] / (sum(scores.values()) + 1e-6)
-    # If confidence is below 0.6 or no keywords matched, set to Unknown
-    if scores[best_cat] == 0 or confidence < 0.6:
+    # If confidence is below 0.55 or no keywords matched, set to Unknown
+    if scores[best_cat] == 0 or confidence < 0.55:
         return "Unknown", round(confidence, 2)
     return best_cat, round(confidence, 2)
 
