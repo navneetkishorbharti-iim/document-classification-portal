@@ -14,10 +14,9 @@ CATEGORIES = {
         "Bank Statement", "Account Transactions", "transactions",
         "Statement of Account", "Account#"
     ],
-    "Resume": ["curriculum vitae", "resume", "skills", "education", "experience","University","college","TECHNICAL SKILLS","PROJECTS"],
+    "Resume": ["curriculum vitae", "resume", "skills", "education", "experience", "University", "college", "TECHNICAL SKILLS", "PROJECTS"],
     "ITR": ["income tax return", "assessment year", "pan", "tax paid"],
-    "Insurance Policy": ["Issued By", "Insurance Policy", "policy date","Agent","Insured", "PREMIUM" "Life Insurance", "insurance", "Insurance Company"
-    ]
+    "Insurance Policy": ["Issued By", "Insurance Policy", "policy date", "Agent", "Insured", "PREMIUM", "Life Insurance", "insurance", "Insurance Company"]
 }
 
 OCR_SPACE_API_KEY = "K89824515488957"
@@ -77,19 +76,19 @@ st.write("Upload a PDF (scanned or digital). The app predicts the document type.
 uploaded_file = st.file_uploader("Choose a PDF file", type=["pdf"])
 
 if uploaded_file is not None:
-    st.info("Processing your PDF...")
-    text = extract_text_from_pdf(uploaded_file)
-    if text and text.strip():
-        doc_type, confidence = classify_document(text)
-        if doc_type == "Unknown":
-            st.warning("The document type could not be identified. Result: **Unknown**")
+    with st.spinner("Processing your PDF..."):
+        text = extract_text_from_pdf(uploaded_file)
+        if text and text.strip():
+            doc_type, confidence = classify_document(text)
+            if doc_type == "Unknown":
+                st.warning("The document type could not be identified. Result: **Unknown**")
+            else:
+                st.success(f"Predicted Type: **{doc_type}**")
+            st.write(f"Confidence Score: **{confidence}**")
+            st.subheader("Extracted Text (sample):")
+            st.code(text[:1000])  # Show first 1000 chars
         else:
-            st.success(f"Predicted Type: **{doc_type}**")
-        st.write(f"Confidence Score: **{confidence}**")
-        st.subheader("Extracted Text (sample):")
-        st.code(text[:1000])  # Show first 1000 chars
-    else:
-        st.error("Could not extract any text from the PDF. Please check your file.")
+            st.error("Could not extract any text from the PDF. Please check your file.")
 
 st.markdown("---")
 st.markdown("**Categories:** Invoice, Bank Statement, Resume, ITR, Insurance Policy, Unknown")
