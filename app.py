@@ -128,18 +128,14 @@ def ocr_space_image_bytes(image_bytes, api_key=OCR_SPACE_API_KEY):
         return ""  # OCR errors handled in extract_text_from_pdf
 
 def extract_text_from_pdf(pdf_file):
-    # Error handling for empty/corrupt/PW-protected/malformed/huge PDFs
     try:
         # Check for empty file (0 bytes)
         if pdf_file.size == 0:
             return None, "❌ Uploaded file is empty, please try again with a valid PDF."
-        # Save to temp for pdfplumber (for some checks)
         with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
             tmp.write(pdf_file.read())
             tmp_path = tmp.name
-        # Try to open with pdfplumber
         with pdfplumber.open(tmp_path) as pdf:
-            # Check for no pages
             if not pdf.pages or len(pdf.pages) == 0:
                 return None, "❌ PDF contains no pages. Please upload a valid PDF."
             text = ""
@@ -151,7 +147,6 @@ def extract_text_from_pdf(pdf_file):
                 if page_text and page_text.strip():
                     text += page_text + "\n"
                 else:
-                    # Use OCR.Space for scanned page
                     try:
                         img = page.to_image(resolution=300).original
                         with tempfile.NamedTemporaryFile(suffix=".jpg") as temp_img:
@@ -160,13 +155,11 @@ def extract_text_from_pdf(pdf_file):
                             ocr_text = ocr_space_image_bytes(temp_img.read())
                             text += ocr_text + "\n"
                     except Exception:
-                        pass  # Ignore image/OCR errors, treat as no text
-        # If no text is found, maybe it's password protected, corrupted, or just blank
+                        pass
         if not text or text.strip() == "":
             return None, "❌ Could not extract any text from the PDF. It may be corrupted, password protected, or empty."
         return text, None
     except Exception as e:
-        # MemoryError/Timeout/Corruption
         if "password" in str(e).lower():
             return None, "❌ PDF is password protected. Please upload an unlocked PDF."
         elif "EOF" in str(e) or "corrupt" in str(e).lower():
@@ -187,10 +180,18 @@ def classify_document(text):
         return "Unknown", round(confidence, 2)
     return best_cat, round(confidence, 2)
 
-uploaded_file = st.file_uploader("Choose a PDF file", type=["pdf"])
+uploaded_file = st.file_uploader("Choose a PDF file", type=["pdf"], key="pdf_uploader")
 
-if uploaded_file is not None:
-    with st.spinner("Processing your PDF..."):
+if uploaded_file is None:
+    pass
+else:
+    st.markdown("""
+        <div style="display:flex;align-items:center;gap:8px;font-size:1.1em;">
+            <span style="font-size:1.5em;">⬆️</span>
+            <span>Uploading...</span>
+        </div>
+    """, unsafe_allow_html=True)
+    with st.spinner("Processing, please wait..."):
         text, error_message = extract_text_from_pdf(uploaded_file)
         if error_message:
             st.error(error_message)
