@@ -199,7 +199,7 @@ if uploaded_file is not None:
             if doc_type == "Unknown":
                 st.warning("The document type could not be identified. Result: **Unknown**")
             else:
-                st.success(f"Document classified as: **{doc_type}**")
+                st.success(f"The document is classified as a: **{doc_type}**")
             st.write(f"Confidence Score: **{confidence}**")
             st.subheader("Extracted Text (sample):")
             st.code(text[:1000])
