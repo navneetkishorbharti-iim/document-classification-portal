@@ -2,7 +2,7 @@ import streamlit as st
 import pdfplumber
 import requests
 import tempfile
-# built by NAVNEET KISHOR BHARTI, using Github Copilot and Streamlit. Contact @ navneetkishor.bharti@gmail.com
+# built by NAVNEET KISHOR BHARTI, with the help of Github Copilot and Streamlit. Contact @ navneetkishor.bharti@gmail.com
 # --- Dark/Light Mode Toggle in Top-Right ---
 col1, col2 = st.columns([8, 1])
 with col2:
