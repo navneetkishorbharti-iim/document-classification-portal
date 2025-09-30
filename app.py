@@ -16,14 +16,7 @@ CATEGORIES = {
     ],
     "Resume": ["curriculum vitae", "resume", "skills", "education", "experience"],
     "ITR": ["income tax return", "assessment year", "pan", "tax paid"],
-    "Driving License": [
-        "Driving License", "Driver's License", "DL Number", "License Number", "Issuing Authority", "RTO",
-        "Regional Transport Office", "Name", "Father's Name", "Date of Birth", "DOB", "Blood Group",
-        "Address", "Residential Address", "Permanent Address", "Issue Date", "Expiry Date", "Validity",
-        "Class of Vehicle", "Vehicle Class", "LMV", "MCWG", "HMV", "License Type", "Learner's License",
-        "Permanent License", "Signature", "Photo", "QR Code", "Barcode", "Nationality", "Gender", "Eyes",
-        "Height", "Identification Marks", "Authorized Signatory", "State", "Union Territory", "Smart Card",
-        "Duplicate", "Renewal", "Conditions", "Restrictions", "Endorsements", "Indian Driving License", "DL No.", "Issued By"
+    "Insurance Policy": [  "Issued By", " Insurance Policy", "policy date", "Life Insurance", "insurance","Insurance Company"
     ]
 }
 
