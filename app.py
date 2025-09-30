@@ -200,7 +200,7 @@ if uploaded_file is not None:
                 st.warning("The document type could not be identified. Result: **Unknown**")
             else:
                 st.success(f"The document is classified as a: **{doc_type}**")
-          st.write(f"Confidence Score(0-1): **{confidence}**")
+            st.write(f"Confidence Score(0-1): **{confidence}**")
            # st.subheader("Extracted Text (sample):")
           # st.code(text[:1000])
         else:
@@ -209,4 +209,3 @@ if uploaded_file is not None:
 st.markdown("---")
 st.markdown("**Categories:** Invoice, Bank Statement, Resume, ITR, Insurance Policy, Unknown")
 st.markdown("**Prototype built by:** Navneet Kishor Bharti, navneetkishor.bharti@gmail.com")
-
