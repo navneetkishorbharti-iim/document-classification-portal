@@ -208,4 +208,5 @@ if uploaded_file is not None:
 
 st.markdown("---")
 st.markdown("**Categories:** Invoice, Bank Statement, Resume, ITR, Insurance Policy, Unknown")
-st.markdown("**How to add a category?** Edit the `CATEGORIES` dictionary in `app.py`.")
+st.markdown("**Prototype built by:** Navneet Kishor Bharti, feel free to drop a message at: `navneetkishor.bharti@gmail.com`.")
+
