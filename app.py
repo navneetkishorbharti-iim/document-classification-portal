@@ -201,7 +201,7 @@ if uploaded_file is not None:
             else:
                 st.success(f"The document is classified as a: **{doc_type}**")
             st.write(f"Confidence Score: **{confidence}**")
-            st.subheader("Extracted Text (sample):")
+           # st.subheader("Extracted Text (sample):")
             st.code(text[:1000])
         else:
             st.error("❌ Uploaded file is empty or not a valid PDF, please try again.")
