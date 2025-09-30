@@ -5,8 +5,8 @@ from PIL import Image
 
 # Document categories and keywords for simple classification
 CATEGORIES = {
-    "Invoice": ["invoice", "total amount", "bill to", "invoice number"],
-    "Bank Statement": ["account number", "transaction", "balance", "statement period"],
+    "Invoice": ["invoice", "Invoice", "total amount", "bill to", "invoice number","Invoice number", "Invoice Number", "billed to", "Bill to"],
+    "Bank Statement": ["account number", "transaction", "balance", "statement period", "Bank Statement", "Account Transactions", "transactions", "Statement of Account","Account#"],
     "Resume": ["curriculum vitae", "resume", "skills", "education", "experience"],
     "ITR": ["income tax return", "assessment year", "pan", "tax paid"],
     "Offer Letter": ["offer letter", "position", "joining date", "salary", "welcome"],
