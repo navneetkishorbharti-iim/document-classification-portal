@@ -12,7 +12,7 @@ CATEGORIES = {
         "account number", "transaction", "balance", "statement period",
         "Bank Statement", "Account Transactions", "transactions",
         "Statement of Account", "Account#"],
-    "Resume": ["curriculum vitae", "professional summary", "resume", "skills", "education", "experience"],
+   
     "ITR": ["income tax return", "assessment year", "pan", "tax paid"],
     "Job Description": ["About us", "position", "About the Role", "Qualifications", "Employer", "why join us","Responsibilities","Benefits", "compensation", "Required skills", "required skill", "nice to have","Job Title", "Employment type", "about"],
 }
