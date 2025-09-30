@@ -3,7 +3,45 @@ import pdfplumber
 import requests
 import tempfile
 
-# Updated Document categories and keywords for simple classification
+# --- Dark/Light Mode Toggle ---
+mode = st.toggle("🌗 Toggle Dark Mode", value=False, help="Switch between dark and light mode")
+
+if mode:
+    # Dark mode CSS
+    st.markdown("""
+        <style>
+        .main, .block-container {
+            background-color: #212121 !important;
+            color: #FAFAFA !important;
+        }
+        div[data-testid="stHeader"] {
+            background: #212121;
+        }
+        .stButton>button {
+            background-color: #333333 !important;
+            color: #FAFAFA !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+else:
+    # Light mode CSS (Streamlit default, but you can tweak)
+    st.markdown("""
+        <style>
+        .main, .block-container {
+            background-color: #FAFAFA !important;
+            color: #212121 !important;
+        }
+        div[data-testid="stHeader"] {
+            background: #FAFAFA;
+        }
+        .stButton>button {
+            background-color: #E0E0E0 !important;
+            color: #212121 !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+# ---- Rest of your app ----
 CATEGORIES = {
     "Invoice": [
         "invoice", "Invoice", "total amount", "bill to", "invoice number",
@@ -14,9 +52,9 @@ CATEGORIES = {
         "Bank Statement", "Account Transactions", "transactions",
         "Statement of Account", "Account#"
     ],
-    "Resume": ["curriculum vitae", "resume", "skills", "education", "experience", "University", "college", "TECHNICAL SKILLS", "PROJECTS"],
+    "Resume": ["curriculum vitae", "resume", "skills", "education", "experience","University","college","TECHNICAL SKILLS","PROJECTS"],
     "ITR": ["income tax return", "assessment year", "pan", "tax paid"],
-    "Insurance Policy": ["Issued By", "Insurance Policy", "policy date", "Agent", "Insured", "PREMIUM", "Life Insurance", "insurance", "Insurance Company"]
+    "Insurance Policy": ["Issued By", "Insurance Policy", "policy date","Agent","Insured", "PREMIUM" "Life Insurance", "insurance", "Insurance Company"]
 }
 
 OCR_SPACE_API_KEY = "K89824515488957"
