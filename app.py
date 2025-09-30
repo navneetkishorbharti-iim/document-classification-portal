@@ -7,16 +7,14 @@ import tempfile
 CATEGORIES = {
     "Invoice": [
         "invoice", "Invoice", "total amount", "bill to", "invoice number",
-        "Invoice number", "Invoice Number", "billed to", "Bill to"
-    ],
+        "Invoice number", "Invoice Number", "billed to", "Bill to"],
     "Bank Statement": [
         "account number", "transaction", "balance", "statement period",
         "Bank Statement", "Account Transactions", "transactions",
-        "Statement of Account", "Account#"
-    ],
+        "Statement of Account", "Account#"],
     "Resume": ["curriculum vitae", "resume", "skills", "education", "experience"],
     "ITR": ["income tax return", "assessment year", "pan", "tax paid"],
-    "Offer Letter": ["offer letter", "position", "joining date", "salary", "welcome"],
+    "Job Description": ["About us", "position", "About the Role", "Qualifications", "Employer"],
 }
 
 OCR_SPACE_API_KEY = "K89824515488957"
