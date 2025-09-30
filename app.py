@@ -3,45 +3,104 @@ import pdfplumber
 import requests
 import tempfile
 
-# --- Dark/Light Mode Toggle ---
-mode = st.toggle("🌗 Toggle Dark Mode", value=False, help="Switch between dark and light mode")
+# --- Dark/Light Mode Toggle in Top-Right ---
+col1, col2 = st.columns([8, 1])
+with col2:
+    mode = st.toggle("🌗", value=False, help="Toggle dark mode", label_visibility="visible")
 
+# --- Inject custom CSS for full dark/light theme ---
 if mode:
-    # Dark mode CSS
     st.markdown("""
         <style>
-        .main, .block-container {
-            background-color: #212121 !important;
-            color: #FAFAFA !important;
+        html, body, .main, .block-container, .stApp {
+            background-color: #181818 !important;
+            color: #F0F0F0 !important;
         }
         div[data-testid="stHeader"] {
-            background: #212121;
+            background: #181818 !important;
         }
-        .stButton>button {
-            background-color: #333333 !important;
-            color: #FAFAFA !important;
+        .stButton>button, .stTextInput>div>div>input, .stFileUploader>div>div, .stTextArea textarea, .stSelectbox select, .stCode, .stMarkdown, .stAlert {
+            background-color: #222 !important;
+            color: #F0F0F0 !important;
+            border-color: #555 !important;
         }
+        code {
+            background: #222 !important;
+            color: #F0F0F0 !important;
+        }
+        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
+            color: #F0F0F0 !important;
+        }
+        /* Invert Streamlit warning/success/info colors */
+        .stAlert {
+            background-color: #222 !important;
+            color: #FFD700 !important;
+        }
+        .stAlert[data-testid="stSuccess"] {
+            background-color: #233C2F !important;
+            color: #48FF99 !important;
+        }
+        .stAlert[data-testid="stWarning"] {
+            background-color: #322B0A !important;
+            color: #FFD700 !important;
+        }
+        .stAlert[data-testid="stError"] {
+            background-color: #3C2323 !important;
+            color: #FF6F6F !important;
+        }
+        /* Custom spinner color */
+        .stSpinner > div > div {
+            color: #F0F0F0 !important;
+        }
+        /* Hide Streamlit watermark in dark mode if wanted */
+        footer {visibility: hidden;}
         </style>
     """, unsafe_allow_html=True)
 else:
-    # Light mode CSS (Streamlit default, but you can tweak)
     st.markdown("""
         <style>
-        .main, .block-container {
+        html, body, .main, .block-container, .stApp {
             background-color: #FAFAFA !important;
             color: #212121 !important;
         }
         div[data-testid="stHeader"] {
-            background: #FAFAFA;
+            background: #FAFAFA !important;
         }
-        .stButton>button {
-            background-color: #E0E0E0 !important;
+        .stButton>button, .stTextInput>div>div>input, .stFileUploader>div>div, .stTextArea textarea, .stSelectbox select, .stCode, .stMarkdown, .stAlert {
+            background-color: #FFF !important;
             color: #212121 !important;
+            border-color: #CCC !important;
+        }
+        code {
+            background: #EEE !important;
+            color: #212121 !important;
+        }
+        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
+            color: #212121 !important;
+        }
+        .stAlert {
+            background-color: #FFF8DC !important;
+            color: #212121 !important;
+        }
+        .stAlert[data-testid="stSuccess"] {
+            background-color: #E6FFED !important;
+            color: #036C23 !important;
+        }
+        .stAlert[data-testid="stWarning"] {
+            background-color: #FFF3CD !important;
+            color: #856404 !important;
+        }
+        .stAlert[data-testid="stError"] {
+            background-color: #F8D7DA !important;
+            color: #721C24 !important;
         }
         </style>
     """, unsafe_allow_html=True)
 
-# ---- Rest of your app ----
+# ---- App Title and Rest of your app ----
+st.title("Document Classification Portal")
+st.write("Upload a PDF (scanned or digital). The app predicts the document type.")
+
 CATEGORIES = {
     "Invoice": [
         "invoice", "Invoice", "total amount", "bill to", "invoice number",
@@ -107,9 +166,6 @@ def classify_document(text):
     if scores[best_cat] == 0 or confidence < 0.55:
         return "Unknown", round(confidence, 2)
     return best_cat, round(confidence, 2)
-
-st.title("Document Classification Portal")
-st.write("Upload a PDF (scanned or digital). The app predicts the document type.")
 
 uploaded_file = st.file_uploader("Choose a PDF file", type=["pdf"])
 
