@@ -3,10 +3,17 @@ import pdfplumber
 import requests
 import tempfile
 
-# Document categories and keywords for simple classification
+# Updated Document categories and keywords for simple classification
 CATEGORIES = {
-    "Invoice": ["invoice", "Invoice", "total amount", "bill to", "invoice number","Invoice number", "Invoice Number", "billed to", "Bill to"],
-    "Bank Statement": ["account number", "transaction", "balance", "statement period", "Bank Statement", "Account Transactions", "transactions", "Statement of Account","Account#"],
+    "Invoice": [
+        "invoice", "Invoice", "total amount", "bill to", "invoice number",
+        "Invoice number", "Invoice Number", "billed to", "Bill to"
+    ],
+    "Bank Statement": [
+        "account number", "transaction", "balance", "statement period",
+        "Bank Statement", "Account Transactions", "transactions",
+        "Statement of Account", "Account#"
+    ],
     "Resume": ["curriculum vitae", "resume", "skills", "education", "experience"],
     "ITR": ["income tax return", "assessment year", "pan", "tax paid"],
     "Offer Letter": ["offer letter", "position", "joining date", "salary", "welcome"],
@@ -72,7 +79,10 @@ if uploaded_file is not None:
     text = extract_text_from_pdf(uploaded_file)
     if text and text.strip():
         doc_type, confidence = classify_document(text)
-        st.success(f"Predicted Type: **{doc_type}**")
+        if doc_type == "Unknown":
+            st.warning("The document type could not be identified. Result: **Unknown**")
+        else:
+            st.success(f"Predicted Type: **{doc_type}**")
         st.write(f"Confidence Score: **{confidence}**")
         st.subheader("Extracted Text (sample):")
         st.code(text[:1000])  # Show first 1000 chars
