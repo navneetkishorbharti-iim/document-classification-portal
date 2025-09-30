@@ -185,12 +185,7 @@ uploaded_file = st.file_uploader("Choose a PDF file", type=["pdf"], key="pdf_upl
 if uploaded_file is None:
     pass
 else:
-    st.markdown("""
-        <div style="display:flex;align-items:center;gap:8px;font-size:1.1em;">
-            <span style="font-size:1.5em;">⬆️</span>
-            <span>Uploading...</span>
-        </div>
-    """, unsafe_allow_html=True)
+    # Only show spinner "Processing please wait..." until the result/confidence is displayed
     with st.spinner("Processing, please wait..."):
         text, error_message = extract_text_from_pdf(uploaded_file)
         if error_message:
