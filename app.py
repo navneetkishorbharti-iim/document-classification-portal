@@ -201,7 +201,11 @@ if uploaded_file is not None:
             else:
                 st.success(f"The document is classified as a: **{doc_type}**")
         #    st.write(f"Confidence Score(0-1): **{confidence}**")
-        st.markdown(    f'Confidence Score(0-1): **{confidence}** '    '<span title="Confidence score indicates how certain the system is about the prediction. '    'A score close to 1 means high certainty; close to 0 means low certainty or unclear document type.">'    '❓</span>',    unsafe_allow_html=True)
+        st.markdown(    f'Confidence Score(0-1): **{confidence}** '    
+                    '<span title="Confidence score indicates how certain the system is about the prediction. '    
+                    'A score close to 1 means high certainty; close to 0 means low certainty or unclear document type.">'    
+                    '❓</span>',    
+                    unsafe_allow_html=True)
            # st.subheader("Extracted Text (sample):")
           # st.code(text[:1000])
         else:
