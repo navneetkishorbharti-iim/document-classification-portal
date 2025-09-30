@@ -14,7 +14,7 @@ CATEGORIES = {
         "Bank Statement", "Account Transactions", "transactions",
         "Statement of Account", "Account#"
     ],
-    "Resume": ["curriculum vitae", "resume", "skills", "education", "experience","University","college"],
+    "Resume": ["curriculum vitae", "resume", "skills", "education", "experience","University","college","TECHNICAL SKILLS","PROJECTS"],
     "ITR": ["income tax return", "assessment year", "pan", "tax paid"],
     "Insurance Policy": [
         "Issued By", "Insurance Policy", "policy date", "Life Insurance", "insurance", "Insurance Company"
