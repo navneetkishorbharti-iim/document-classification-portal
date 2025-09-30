@@ -8,7 +8,6 @@ col1, col2 = st.columns([8, 1])
 with col2:
     mode = st.toggle("🌗", value=False, help="Toggle dark mode", label_visibility="visible")
 
-# --- Inject custom CSS for full dark/light theme ---
 if mode:
     st.markdown("""
         <style>
@@ -31,7 +30,6 @@ if mode:
         .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
             color: #F0F0F0 !important;
         }
-        /* Invert Streamlit warning/success/info colors */
         .stAlert {
             background-color: #222 !important;
             color: #FFD700 !important;
@@ -48,11 +46,9 @@ if mode:
             background-color: #3C2323 !important;
             color: #FF6F6F !important;
         }
-        /* Custom spinner color */
         .stSpinner > div > div {
             color: #F0F0F0 !important;
         }
-        /* Hide Streamlit watermark in dark mode if wanted */
         footer {visibility: hidden;}
         </style>
     """, unsafe_allow_html=True)
@@ -97,7 +93,6 @@ else:
         </style>
     """, unsafe_allow_html=True)
 
-# ---- App Title and Rest of your app ----
 st.title("Document Classification Portal")
 st.write("Upload a PDF (scanned or digital). The app predicts the document type.")
 
@@ -130,29 +125,55 @@ def ocr_space_image_bytes(image_bytes, api_key=OCR_SPACE_API_KEY):
         result = r.json()
         return result['ParsedResults'][0]['ParsedText']
     except Exception as e:
-        st.warning(f"OCR.space error: {e}")
-        return ""
+        return ""  # OCR errors handled in extract_text_from_pdf
 
 def extract_text_from_pdf(pdf_file):
-    text = ""
+    # Error handling for empty/corrupt/PW-protected/malformed/huge PDFs
     try:
-        with pdfplumber.open(pdf_file) as pdf:
+        # Check for empty file (0 bytes)
+        if pdf_file.size == 0:
+            return None, "❌ Uploaded file is empty, please try again with a valid PDF."
+        # Save to temp for pdfplumber (for some checks)
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+            tmp.write(pdf_file.read())
+            tmp_path = tmp.name
+        # Try to open with pdfplumber
+        with pdfplumber.open(tmp_path) as pdf:
+            # Check for no pages
+            if not pdf.pages or len(pdf.pages) == 0:
+                return None, "❌ PDF contains no pages. Please upload a valid PDF."
+            text = ""
             for page in pdf.pages:
-                page_text = page.extract_text()
+                try:
+                    page_text = page.extract_text()
+                except Exception:
+                    page_text = None
                 if page_text and page_text.strip():
                     text += page_text + "\n"
                 else:
                     # Use OCR.Space for scanned page
-                    img = page.to_image(resolution=300).original
-                    with tempfile.NamedTemporaryFile(suffix=".jpg") as temp_img:
-                        img.save(temp_img.name)
-                        temp_img.seek(0)
-                        ocr_text = ocr_space_image_bytes(temp_img.read())
-                        text += ocr_text + "\n"
-        return text
+                    try:
+                        img = page.to_image(resolution=300).original
+                        with tempfile.NamedTemporaryFile(suffix=".jpg") as temp_img:
+                            img.save(temp_img.name)
+                            temp_img.seek(0)
+                            ocr_text = ocr_space_image_bytes(temp_img.read())
+                            text += ocr_text + "\n"
+                    except Exception:
+                        pass  # Ignore image/OCR errors, treat as no text
+        # If no text is found, maybe it's password protected, corrupted, or just blank
+        if not text or text.strip() == "":
+            return None, "❌ Could not extract any text from the PDF. It may be corrupted, password protected, or empty."
+        return text, None
     except Exception as e:
-        st.error(f"Error processing PDF: {e}")
-        return None
+        # MemoryError/Timeout/Corruption
+        if "password" in str(e).lower():
+            return None, "❌ PDF is password protected. Please upload an unlocked PDF."
+        elif "EOF" in str(e) or "corrupt" in str(e).lower():
+            return None, "❌ PDF is corrupted or malformed. Please try with a different file."
+        elif "MemoryError" in str(type(e)):
+            return None, "❌ PDF is too large or caused a memory error. Please upload a smaller file."
+        return None, f"❌ Uploaded file is not a valid PDF or can't be processed. Error: {str(e)}"
 
 def classify_document(text):
     scores = {}
@@ -162,7 +183,6 @@ def classify_document(text):
         scores[cat] = score
     best_cat = max(scores, key=scores.get)
     confidence = scores[best_cat] / (sum(scores.values()) + 1e-6)
-    # If confidence is below 0.55 or no keywords matched, set to Unknown
     if scores[best_cat] == 0 or confidence < 0.55:
         return "Unknown", round(confidence, 2)
     return best_cat, round(confidence, 2)
@@ -171,8 +191,10 @@ uploaded_file = st.file_uploader("Choose a PDF file", type=["pdf"])
 
 if uploaded_file is not None:
     with st.spinner("Processing your PDF..."):
-        text = extract_text_from_pdf(uploaded_file)
-        if text and text.strip():
+        text, error_message = extract_text_from_pdf(uploaded_file)
+        if error_message:
+            st.error(error_message)
+        elif text and text.strip():
             doc_type, confidence = classify_document(text)
             if doc_type == "Unknown":
                 st.warning("The document type could not be identified. Result: **Unknown**")
@@ -180,9 +202,9 @@ if uploaded_file is not None:
                 st.success(f"Predicted Type: **{doc_type}**")
             st.write(f"Confidence Score: **{confidence}**")
             st.subheader("Extracted Text (sample):")
-            st.code(text[:1000])  # Show first 1000 chars
+            st.code(text[:1000])
         else:
-            st.error("Could not extract any text from the PDF. Please check your file.")
+            st.error("❌ Uploaded file is empty or not a valid PDF, please try again.")
 
 st.markdown("---")
 st.markdown("**Categories:** Invoice, Bank Statement, Resume, ITR, Insurance Policy, Unknown")
