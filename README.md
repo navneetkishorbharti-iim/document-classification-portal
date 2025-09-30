@@ -1,19 +1,76 @@
-# Document-classification-portal
-How to run?
-> To run this prototype you need to click this link: https://navneet-document-classification-app-p7t8spix4fmtvkl8u6qx5x.streamlit.app/
-My chosen categories
-> Invoice, Bank Statement, Resume, ITR, Insurance Policy, Unknown
-Approach
-> My approach was focused on shipping a simple, extensible prototype that demonstrates end-to-end document classification for both scanned and digital PDFs. I used Streamlit Community Cloud to deploy an interactive web-based portal, achieving quick deployment and user-friendly interactions. 
-> For text extraction, we combined pdfplumber (for digital PDFs) with OCR.Space API (for scanned PDFs), enabling robust handling of diverse input formats. 
-> Classification logic was implemented using a keyword-based scoring model, mapping extracted text against predefined categories (Invoice, Bank Statement, Resume, ITR, Insurance Policy) with confidence scoring and an “Unknown” fallback. Requests were used for API calls and tempfile for handling uploads securely. 
-> Error handling was built in for empty, corrupted, or password-protected PDFs.
-> The codebase was scaffolded using GitHub Copilot to accelerate prototyping.
-> My sample set: https://drive.google.com/drive/folders/1toGlNj3yBEpt7zR7oo1MLAEUENY7PwKB?usp=sharing
+# 📄 Document Classification Portal
 
-How to add a new category
-> To add a new category, navigate to my GitHub repo, access app.py file and simply extend the CATEGORIES dictionary in the code(starting from line 99) by creating a new key-value pair. 
-> The key is the name of the category (e.g., "Medical Report") and the value is a list of representative keywords/phrases that are unique to that document type (e.g., ["diagnosis", "patient name", "hospital", "report date"]). 
-> Once added, commit the change and the classifier will automatically score this new category against extracted text and include it in the prediction pipeline, no further code changes are required. 
-> Now simply refresh the Streamlit app, try uploading the new PDFs and changes should be visible on the internet hosted app.
-(Assumption: this repo is being used within a team hence anyone within a team can access, or else fork the project, do the changes in the code as mentioned above, re-deploy the app on Streamlit using your account(this is a one time step)->sign up free->Streamlit Community Cloud -> GitHub deploy -> use your git repo URL for eg: github.com/<the new user or persons account name>/document-classification-portal/app.py-> the app is deployed. Any code changes will reflect here.)
+A working prototype that ingests a PDF (scanned or digital) and outputs the predicted document type.
+
+---
+
+## 🚀 How to Run
+
+Click here to access the deployed app:
+👉 [Live Demo on Streamlit](https://navneet-document-classification-app-p7t8spix4fmtvkl8u6qx5x.streamlit.app/)
+
+---
+
+## 📂 My Chosen Categories
+
+* Invoice
+* Bank Statement
+* Resume
+* ITR
+* Insurance Policy
+* Unknown
+
+---
+
+## 💡 Approach
+
+* Focused on building a **simple, extensible prototype** for end-to-end document classification on both scanned and digital PDFs.
+* Built using **Streamlit Community Cloud** for quick deployment and user-friendly interactions.
+* Used **pdfplumber** for extracting text from digital PDFs and **OCR.Space API** for handling scanned PDFs.
+* Implemented a **keyword-based scoring model** that maps extracted text to predefined categories with confidence scoring and an “Unknown” fallback.
+* Used **Requests** for API calls and **tempfile** for secure file handling.
+* Added **error handling** for empty, corrupted, or password-protected PDFs.
+* Scaffolded with **GitHub Copilot** to accelerate prototyping.
+* 📊 [Sample PDFs Dataset](https://drive.google.com/drive/folders/1toGlNj3yBEpt7zR7oo1MLAEUENY7PwKB?usp=sharing)
+
+---
+
+## 🛠️ Tech Stack
+
+* **[Streamlit](https://streamlit.io/)** – frontend framework for building and deploying the portal
+* **[pdfplumber](https://github.com/jsvine/pdfplumber)** – text extraction from digital PDFs
+* **[OCR.Space API](https://ocr.space/)** – OCR for scanned PDFs
+* **[Requests](https://docs.python-requests.org/)** – API requests handling
+* **[tempfile](https://docs.python.org/3/library/tempfile.html)** – secure temporary file storage
+* **[GitHub Copilot](https://github.com/features/copilot)** – AI-assisted code scaffolding
+
+---
+
+## ➕ How to Add a New Category
+
+1. Navigate to the repo and open **`app.py`**.
+2. Locate the **`CATEGORIES`** dictionary (starting around line 99).
+3. Add a new key–value pair:
+
+   ```python
+   "Medical Report": ["diagnosis", "patient name", "hospital", "report date"]
+   ```
+4. Commit the change — the classifier will automatically include the new category in its predictions (no extra code required).
+5. Refresh the Streamlit app and test with sample PDFs of the new type.
+
+---
+
+## 👥 For External Contributors
+
+If you are outside the team and want to add a new category:
+
+* **Fork** this repository into your own GitHub account.
+* Make the changes in **`app.py`** as described above.
+* Deploy your version of the app on **Streamlit Community Cloud**:
+
+  * Sign up for free at [Streamlit Cloud](https://streamlit.io/cloud).
+  * Connect your GitHub repo.
+  * Deploy the app by pointing to the file path (e.g., `github.com/<your-username>/document-classification-portal/app.py`).
+* Once deployed, your changes will be live, and further commits to your fork will automatically update your hosted app.
+
+---
