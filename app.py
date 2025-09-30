@@ -83,5 +83,5 @@ if uploaded_file is not None:
         st.error("Could not extract any text from the PDF. Please check your file.")
 
 st.markdown("---")
-st.markdown("**Categories:** Invoice, Bank Statement, Resume, ITR, Job Description, Unknown")
+st.markdown("**Categories:** Invoice, Bank Statement, Resume, ITR, Insurance Policy, Unknown")
 st.markdown("**How to add a category?** Edit the `CATEGORIES` dictionary in `app.py`.")
