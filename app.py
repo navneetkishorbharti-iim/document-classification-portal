@@ -14,7 +14,7 @@ CATEGORIES = {
         "Statement of Account", "Account#"],
     "Resume": ["curriculum vitae", "resume", "skills", "education", "experience"],
     "ITR": ["income tax return", "assessment year", "pan", "tax paid"],
-    "Job Description": ["About us", "position", "About the Role", "Qualifications", "Employer"],
+    "Job Description": ["About us", "position", "About the Role", "Qualifications", "Employer", "why join us", "Required skills", "required skill", "nice to have"],
 }
 
 OCR_SPACE_API_KEY = "K89824515488957"
@@ -88,5 +88,5 @@ if uploaded_file is not None:
         st.error("Could not extract any text from the PDF. Please check your file.")
 
 st.markdown("---")
-st.markdown("**Categories:** Invoice, Bank Statement, Resume, ITR, Offer Letter, Unknown")
+st.markdown("**Categories:** Invoice, Bank Statement, Resume, ITR, Job Description, Unknown")
 st.markdown("**How to add a category?** Edit the `CATEGORIES` dictionary in `app.py`.")
