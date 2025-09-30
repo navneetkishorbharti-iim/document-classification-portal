@@ -16,7 +16,8 @@ CATEGORIES = {
     ],
     "Resume": ["curriculum vitae", "resume", "skills", "education", "experience"],
     "ITR": ["income tax return", "assessment year", "pan", "tax paid"],
-    "Insurance Policy": [  "Issued By", " Insurance Policy", "policy date", "Life Insurance", "insurance","Insurance Company"
+    "Insurance Policy": [
+        "Issued By", "Insurance Policy", "policy date", "Life Insurance", "insurance", "Insurance Company"
     ]
 }
 
@@ -66,8 +67,9 @@ def classify_document(text):
         scores[cat] = score
     best_cat = max(scores, key=scores.get)
     confidence = scores[best_cat] / (sum(scores.values()) + 1e-6)
-    if scores[best_cat] == 0:
-        return "Unknown", 0.0
+    # If confidence is below 0.4 or no keywords matched, set to Unknown
+    if scores[best_cat] == 0 or confidence < 0.4:
+        return "Unknown", round(confidence, 2)
     return best_cat, round(confidence, 2)
 
 st.title("Document Classification Portal")
@@ -91,5 +93,5 @@ if uploaded_file is not None:
         st.error("Could not extract any text from the PDF. Please check your file.")
 
 st.markdown("---")
-st.markdown("**Categories:** Invoice, Bank Statement, Resume, ITR, Driving License, Unknown")
+st.markdown("**Categories:** Invoice, Bank Statement, Resume, ITR, Insurance Policy, Unknown")
 st.markdown("**How to add a category?** Edit the `CATEGORIES` dictionary in `app.py`.")
